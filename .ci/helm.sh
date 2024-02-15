@@ -356,6 +356,7 @@ function ci::test_pulsar_manager() {
 
   until ${KUBECTL} get jobs -n ${NAMESPACE} ${CLUSTER}-pulsar-manager-init -o json | jq -r '.status.conditions[] | select (.type | test("Complete")).status' | grep True; do sleep 3; done
   ${KUBECTL} describe job -n ${NAMESPACE} ${CLUSTER}-pulsar-manager-init
+  ${KUBECTL} logs job -n ${NAMESPACE} ${CLUSTER}-pulsar-manager-init
 
   echo "Checking Podname"
   podname=$(${KUBECTL} get pods -n ${NAMESPACE} -l component=pulsar-manager --no-headers -o custom-columns=":metadata.name")
