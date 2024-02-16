@@ -70,6 +70,10 @@ spec:
                 sleep 10;
                 brokerServiceNumber="$(nslookup -timeout=10 {{ template "pulsar.fullname" . }}-{{ .Values.broker.component }} | grep Name | wc -l)";
               done;
+
+              until nslookup {{ template "pulsar.fullname" . }}-{{ .Values.broker.component }}; do
+                sleep 3;
+              done;
       containers:
         - name: "{{ template "pulsar.fullname" . }}-{{ .Values.pulsar_manager.component }}-init"
           image: "{{ template "pulsar.imageFullName" (dict "image" .Values.pulsar_metadata.image "root" .) }}"
