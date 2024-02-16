@@ -112,6 +112,13 @@ spec:
               {{- end }}
               BOOKIE_URL="http://{{ template "pulsar.fullname" . }}-{{ .Values.bookkeeper.component }}:{{ .Values.bookkeeper.ports.http }}"
               echo '{ "name": "{{ template "pulsar.fullname" . }}", "broker": "'$BROKER_URL'", "bookie": "'$BOOKIE_URL'"}'
+
+              nslookup {{ template "pulsar.fullname" . }}-{{ .Values.bookkeeper.component }}
+              nslookup {{ template "pulsar.fullname" . }}-{{ .Values.broker.component }}
+
+              curl $BROKER_URL
+              curl $BOOKIE_URL
+
               curl -v \
                 -X PUT http://${UI_URL}/pulsar-manager/environments/environment \
                 -H 'Content-Type: application/json' \
