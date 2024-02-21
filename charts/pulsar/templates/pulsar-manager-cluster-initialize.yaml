@@ -61,16 +61,13 @@ spec:
           imagePullPolicy: {{ .Values.images.proxy.pullPolicy }}
           resources: {{ toYaml .Values.initContainer.resources | nindent 12 }}
           command: [ "sh", "-c" ]
+          envFrom:
+            - configMapRef:
+                name: "{{ template "pulsar.fullname" . }}-{{ .Values.toolset.component }}"
           args:
             - >-
               set -e;
-              brokerServiceNumber="$(nslookup -timeout=10 {{ template "pulsar.fullname" . }}-{{ .Values.broker.component }} | grep Name | wc -l)";
-              until [ ${brokerServiceNumber} -ge 1 ]; do
-                echo "pulsar cluster {{ template "pulsar.cluster.name" . }} isn't initialized yet ... check in 10 seconds ...";
-                sleep 10;
-                brokerServiceNumber="$(nslookup -timeout=10 {{ template "pulsar.fullname" . }}-{{ .Values.broker.component }} | grep Name | wc -l)";
-              done;
-
+              bin/apply-config-from-env.py conf/client.conf;
               until /pulsar/bin/pulsar-admin clusters list; do
                 sleep 3;
               done;
