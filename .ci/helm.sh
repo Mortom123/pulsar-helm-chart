@@ -379,7 +379,7 @@ function ci::test_pulsar_manager() {
   LOGIN_JSESSSIONID=$(${KUBECTL} exec -n ${NAMESPACE} ${podname} -- grep -o "JSESSIONID=[a-zA-Z0-9_]*" headers.txt | sed 's/^.*=//')
 
   echo "Checking environment"
-  envs=$(${KUBECTL} exec -n ${NAMESPACE} ${podname} -- curl -X GET http://localhost:9527/pulsar-manager/environments \
+  envs=$(${KUBECTL} exec -n ${NAMESPACE} ${podname} -- curl -X GET http://127.0.0.1:9527/pulsar-manager/environments \
                   -H 'Content-Type: application/json' \
                   -H "token: $LOGIN_TOKEN" \
                   -H "X-XSRF-TOKEN: $CSRF_TOKEN" \
