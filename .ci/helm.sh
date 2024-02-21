@@ -389,6 +389,8 @@ function ci::test_pulsar_manager() {
   number_of_envs=$(echo $envs | jq '.total')
   if [ "$number_of_envs" -ne 1 ]; then
     echo "Error: Did not find expected environment"
+    echo "DEBUG SLEEEP"
+    sleep 7200 # 2hrs sleep for debugging
     exit 1
   fi
 }
