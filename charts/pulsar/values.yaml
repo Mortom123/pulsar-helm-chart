@@ -1318,7 +1318,7 @@ pulsar_manager:
     # the pulsar manager image relies on these variables, if they are not set the backend will keep crashing
     # however, feel free to overwrite them
     SPRING_CONFIGURATION_FILE: "/pulsar-manager/pulsar-manager/application.properties"
-    PULSAR_MANAGER_OPTS: " -Dlog4j2.formatMsgNoLookups=true"
+    PULSAR_MANAGER_OPTS: "-Xmx400M -Dlog4j2.formatMsgNoLookups=true"
   volumes:
     # use a persistent volume or emptyDir
     persistence: true
