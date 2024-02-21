@@ -64,6 +64,14 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ template "pulsar.fullname" . }}-{{ .Values.toolset.component }}"
+          volumeMounts:
+            {{- if .Values.auth.authentication.enabled }}
+            {{- if eq .Values.auth.authentication.provider "jwt" }}
+            - mountPath: "/pulsar/tokens"
+              name: client-token
+              readOnly: true
+            {{- end }}
+            {{- end }}
           args:
             - >-
               set -e;
